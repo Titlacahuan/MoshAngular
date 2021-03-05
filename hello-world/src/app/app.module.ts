@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { SummaryPipe } from './summary.pipe';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { TitleCasingPipe } from './titleCasing.pipe';
+import { PanelComponent } from './panel/panel.component';
+import { LikeComponent } from './like/like.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { TitleCasingPipe } from './titleCasing.pipe';
     AuthorsComponent,
     SummaryPipe,
     TitleCasingPipe,
-    FavoriteComponent
+    FavoriteComponent,
+    PanelComponent,
+    LikeComponent
   ],
   imports: [
     BrowserModule,
