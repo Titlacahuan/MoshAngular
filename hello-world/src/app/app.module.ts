@@ -13,6 +13,10 @@ import { FavoriteComponent } from './favorite/favorite.component';
 import { TitleCasingPipe } from './titleCasing.pipe';
 import { PanelComponent } from './panel/panel.component';
 import { LikeComponent } from './like/like.component';
+import { InputFormatDirective } from './input-format.directive';
+import { ZippyComponent } from './zippy/zippy.component';
+import { TitleDirective } from './title.directive';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 
 @NgModule({
@@ -25,7 +29,11 @@ import { LikeComponent } from './like/like.component';
     TitleCasingPipe,
     FavoriteComponent,
     PanelComponent,
-    LikeComponent
+    LikeComponent,
+    InputFormatDirective,
+    ZippyComponent,
+    TitleDirective,
+    ContactFormComponent
   ],
   imports: [
     BrowserModule,

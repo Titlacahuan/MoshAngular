@@ -1,1 +1,7 @@
-<i [class.fas]='isActive' [class.far]='!isActive' class='fa-star' (click)='onClick()'></i>
+<i 
+	[ngClass]= "{
+		'fas': isActive,
+		'far': !isActive
+	}"
+	class='fa-star' 
+	(click)='onClick()'></i>
