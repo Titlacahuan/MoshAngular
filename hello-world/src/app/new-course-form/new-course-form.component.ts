@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'new-course-form',
@@ -8,12 +8,27 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 })
 export class NewCourseFormComponent {
 
-	newCourseForm = new FormGroup({
-		topics: new FormArray([]) 
-	});
+	newCourseForm;
+	// Reactive forms without form builder
+	// newCourseForm = new FormGroup({
+	// 	name: new FormControl(),
+	// 	contact: new FormGroup({
+	// 		email: new FormControl(),
+	// 		phone: new FormControl()
+	// 	}),
+	// 	topics: new FormArray([]) 
+	// });
 
-	submit() {
-		
+	// Same form as above that is commented out, using form builder
+	constructor(fb: FormBuilder) {
+		this.newCourseForm = fb.group({
+			name: ['', Validators.required],
+			contact: fb.group( {
+				email: [],
+				phone: []
+			}),
+			topics: fb.array([])
+		})
 	}
 
 	addTopic(topic : HTMLInputElement) {
