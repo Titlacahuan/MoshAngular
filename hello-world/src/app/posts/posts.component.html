@@ -1,0 +1,15 @@
+<input 
+	type="text" 
+	#title 
+	(keyup.enter)="createPost(title)" 
+	class="form-control"
+>
+
+<div class="card" *ngFor="let post of posts" (click)="log(post)">
+	<div class="card-header">
+		{{ post.title }}
+	</div>
+	<div class="card-body">
+		{{ post.body }}
+	</div>
+</div>
