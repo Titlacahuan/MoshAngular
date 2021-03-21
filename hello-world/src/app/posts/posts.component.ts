@@ -1,5 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { PostService } from '../services/post/post.service';
+import { IPost } from '../interfaces/post/IPost';
+import { IPost_PostResponse } from '../interfaces/post/IPost_PostResponse'
 
 @Component({
 	selector: 'posts',
@@ -9,71 +11,62 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PostsComponent implements OnInit {
 
 	posts: any[];
-	private url = 'https://jsonplaceholder.typicode.com/posts';
+	
 
-	constructor(private http : HttpClient) { 
-		http.get(this.url)
-			.subscribe((response : any[]) => {
-				this.posts = response;
-		  	});
+	constructor(private service: PostService) { 
+		
 	}
 
 	ngOnInit(): void {
-		throw new Error('Method not implemented.');
+		this.service.getPosts()
+			.subscribe((response : any[]) => {
+				this.posts = response;
+			});
 	}
 
-/* PREVIOUS LESSON */
-//   log(x) { 
-// 	  console.log(x);
-//   }
+	log(x) { 
+		console.log(x);
+	}
 
-//   createPost(inputTitle : HTMLInputElement) {
-// 	let post : IPost = {
-// 		id: undefined,
-// 		userId: 0,
-// 		title: inputTitle.value,
-// 		body: ''
-// 	};
+	
 
-// 	this.http.post(this.url, JSON.stringify(post))
-// 		.subscribe((response: IPost_PostResponse) => {
-// 			post.id = response.id;
-// 			console.log(post);
-// 			console.log(response);
+	createPost(inputTitle : HTMLInputElement) {
+		let post : IPost = {
+			id: undefined,
+			userId: 0,
+			title: inputTitle.value,
+			body: ''
+		};
 
-// 			this.posts.splice(0, 0, post);
+		this.service.createPost(post)
+			.subscribe((response: IPost_PostResponse) => {
+				post.id = response.id;
+				console.log(post);
+				console.log(response);
 
-// 			inputTitle.value = '';
-// 		});
-//   }
+				this.posts.splice(0, 0, post);
 
-//   updatePost(post) {
-// 	  post.title = "Hello Omer";
-// 	  this.http.put(`${this.url}/${post.id}`, JSON.stringify(post))
-// 	  	.subscribe(response => {
-// 			  console.log(response);
-// 			  post = response;
-// 		  });
-//   }
-// deletePost(post) {
-// 	this.http.delete(`${this.url}/${post.id}`)
-// 		.subscribe(response => {
-// 			console.log(response);
-// 			let index = this.posts.indexOf(post);
-// 			this.posts.splice(index, 1);
-// 		});
-// 	}
-// }
+				inputTitle.value = '';
+			});
+	}
 
-// interface IPost {
-// 	id;
-// 	userId;
-// 	title;
-// 	body;
-// }
+	updatePost(post) {
+		post.title = "Hello Omer";
+
+		this.service.updatePost(post)
+		.subscribe(response => {
+			console.log(response);
+			post = response;
+		});
+	}
+
+	deletePost(post) {
+		this.service.deletePost(post.id)
+			.subscribe(response => {
+				console.log(response);
+				let index = this.posts.indexOf(post);
+				this.posts.splice(index, 1);
+			});
+	}
 
 }
-
-// interface IPost_PostResponse {
-// 	id;
-// }
