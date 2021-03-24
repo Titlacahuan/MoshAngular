@@ -7,7 +7,8 @@ import { IPost } from '../../interfaces/post/IPost';
   providedIn: 'root'
 })
 export class PostService {
-	private url = 'https://jsonplaceholder.typicode.com/posts';
+	private url = 'http://localhost:3000/posts';
+	//private url = 'https://jsonplaceholder.typicode.com/posts';
 
   	constructor(private http: HttpClient) { }
 
@@ -16,11 +17,19 @@ export class PostService {
 	}
 
 	createPost(post: IPost) : Observable<Object> {
-		return this.http.post(this.url, JSON.stringify(post));
+		return this.http.post(this.url, JSON.stringify(post), {
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
 	}
 
 	updatePost(post: IPost) : Observable<Object> {
-		return this.http.put(`${this.url}/${post.id}`, JSON.stringify(post));
+		return this.http.put(`${this.url}/${post.id}`, JSON.stringify(post), {
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
 	}
 
 	deletePost(postId: number) : Observable<Object> {

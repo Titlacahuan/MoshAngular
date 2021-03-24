@@ -11,6 +11,7 @@ import { IPost_PostResponse } from '../interfaces/post/IPost_PostResponse'
 export class PostsComponent implements OnInit {
 
 	posts: any[];
+	errorToast : boolean = false;
 	
 
 	constructor(private service: PostService) { 
@@ -19,9 +20,16 @@ export class PostsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.service.getPosts()
-			.subscribe((response : any[]) => {
-				this.posts = response;
-			});
+			.subscribe(
+				(response : any[]) => {
+					this.posts = response;
+				}, 
+				(error) => {
+					alert('An unexpected error occurred.');
+					this.errorToast = true;
+					console.log(error);
+				}
+			);
 	}
 
 	log(x) { 
@@ -31,41 +39,65 @@ export class PostsComponent implements OnInit {
 	
 
 	createPost(inputTitle : HTMLInputElement) {
-		let post : IPost = {
+		let post : IPost= {
 			id: undefined,
-			userId: 0,
 			title: inputTitle.value,
-			body: ''
+			author: 'Omer'
 		};
 
 		this.service.createPost(post)
-			.subscribe((response: IPost_PostResponse) => {
-				post.id = response.id;
-				console.log(post);
-				console.log(response);
+			.subscribe(
+				(response: IPost_PostResponse) => {
+					this.posts.splice(0, 0, response);
 
-				this.posts.splice(0, 0, post);
-
-				inputTitle.value = '';
-			});
+					inputTitle.value = '';
+				}, 
+				(error: Response) => {
+					if(error.status === 400) {
+						//this.form.setErrors(error.json())
+					}
+					else {
+						alert('An unexpected error occurred.');
+						console.log(error);
+					}
+				}
+			);
 	}
 
 	updatePost(post) {
 		post.title = "Hello Omer";
+		post.author = "Ali"
 
 		this.service.updatePost(post)
-		.subscribe(response => {
-			console.log(response);
-			post = response;
-		});
+			.subscribe(
+				(response) => {
+					console.log(response);
+					post = response;
+				}, 
+				(error) => {
+					alert('An unexpected error occurred.');
+					console.log(error);
+				}
+			);
 	}
 
 	deletePost(post) {
+		console.log(post);
+
 		this.service.deletePost(post.id)
-			.subscribe(response => {
-				console.log(response);
+			.subscribe( (response) => {
+				console.log('Response: ', response);	
+				
 				let index = this.posts.indexOf(post);
 				this.posts.splice(index, 1);
+			}, 
+			(error : Response) => {
+				if(error.status === 404) {
+					alert('This post has already been deleted.');
+				}
+				else {
+					alert('An unexpected error occurred.');
+				}
 			});
 	}
 
