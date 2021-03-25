@@ -2,6 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PostService } from '../services/post/post.service';
 import { IPost } from '../interfaces/post/IPost';
 import { IPost_PostResponse } from '../interfaces/post/IPost_PostResponse'
+import { AppError } from '../common/app-error';
+import { NotFoundError } from '../common/not-found-error';
+import { BadRequestError } from '../common/bad-request-error';
+import { ɵELEMENT_PROBE_PROVIDERS } from '@angular/platform-browser';
 
 @Component({
 	selector: 'posts',
@@ -14,51 +18,44 @@ export class PostsComponent implements OnInit {
 	errorToast : boolean = false;
 	
 
-	constructor(private service: PostService) { 
-		
-	}
-
-	ngOnInit(): void {
-		this.service.getPosts()
-			.subscribe(
-				(response : any[]) => {
-					this.posts = response;
-				}, 
-				(error) => {
-					alert('An unexpected error occurred.');
-					this.errorToast = true;
-					console.log(error);
-				}
-			);
-	}
+	constructor(private service: PostService) { }
 
 	log(x) { 
 		console.log(x);
 	}
 
-	
+	ngOnInit(): void {
+		this.service.getAll()
+			.subscribe(
+				(posts : any[]) => {
+					this.posts = posts;
+				}
+			);
+	}
 
 	createPost(inputTitle : HTMLInputElement) {
-		let post : IPost= {
+		let post : IPost = {
 			id: undefined,
 			title: inputTitle.value,
 			author: 'Omer'
 		};
+		this.posts.splice(0, 0, post);
 
-		this.service.createPost(post)
+		inputTitle.value = '';
+
+		this.service.create(post)
 			.subscribe(
-				(response: IPost_PostResponse) => {
-					this.posts.splice(0, 0, response);
-
-					inputTitle.value = '';
+				(newPost: IPost_PostResponse) => {
+					post.id = newPost.id;
 				}, 
-				(error: Response) => {
-					if(error.status === 400) {
-						//this.form.setErrors(error.json())
+				(error: AppError) => {
+					this.posts.splice(0, 1);
+
+					if(error instanceof BadRequestError) {
+						//this.form.setErrors(error.originalError)
 					}
 					else {
-						alert('An unexpected error occurred.');
-						console.log(error);
+						throw error;
 					}
 				}
 			);
@@ -68,37 +65,32 @@ export class PostsComponent implements OnInit {
 		post.title = "Hello Omer";
 		post.author = "Ali"
 
-		this.service.updatePost(post)
+		this.service.update(post)
 			.subscribe(
-				(response) => {
-					console.log(response);
-					post = response;
-				}, 
-				(error) => {
-					alert('An unexpected error occurred.');
-					console.log(error);
+				(post) => {
+					post = post;
 				}
 			);
 	}
 
 	deletePost(post) {
-		console.log(post);
+		let index = this.posts.indexOf(post);
+		this.posts.splice(index, 1);
 
-		this.service.deletePost(post.id)
-			.subscribe( (response) => {
-				console.log('Response: ', response);	
-				
-				let index = this.posts.indexOf(post);
-				this.posts.splice(index, 1);
-			}, 
-			(error : Response) => {
-				if(error.status === 404) {
-					alert('This post has already been deleted.');
+		this.service.delete(500)
+			.subscribe( 
+				() => {	}, 
+				(error : AppError) => {
+					this.posts.splice(index, 0, post);
+
+					if(error instanceof NotFoundError) {
+						alert('This post has already been deleted.');
+					}
+					else {
+						throw error;
+					}
 				}
-				else {
-					alert('An unexpected error occurred.');
-				}
-			});
+			);
 	}
 
 }

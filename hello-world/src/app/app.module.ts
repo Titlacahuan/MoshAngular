@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,6 +31,9 @@ import { InputFormatDirective } from './directives/input-format/input-format.dir
 /* Pipes */
 import { SummaryPipe } from './pipes/summary/summary.pipe';
 import { TitleCasingPipe } from './pipes/titleCasing/titleCasing.pipe';
+import { AppErrorHandler } from './common/app-error-handler';
+import { DataService } from './services/data/data.service';
+import { FollowersComponent } from './followers/followers.component';
 
 
 @NgModule({
@@ -52,7 +55,8 @@ import { TitleCasingPipe } from './pipes/titleCasing/titleCasing.pipe';
 		SignupFormComponent,
 		NewCourseFormComponent,
 		ChangePasswordFormComponent,
-		PostsComponent
+		PostsComponent,
+		FollowersComponent
 	],
 	imports: [
 		BrowserModule,
@@ -63,7 +67,11 @@ import { TitleCasingPipe } from './pipes/titleCasing/titleCasing.pipe';
 	],
 	providers: [
 		PostService,
-		CoursesService
+		CoursesService,
+		{
+			provide: ErrorHandler,
+			useClass: AppErrorHandler
+		}
 	],
 	bootstrap: [AppComponent]
 })
