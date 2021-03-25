@@ -19,10 +19,17 @@ import { AuthorsComponent } from './authors/authors.component';
 import { AppComponent } from './app.component';
 import { CourseComponent } from './course/course.component';
 import { CoursesComponent } from './courses/courses.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FollowersComponent } from './followers/followers.component';
+import { HomeComponent } from './home/home.component';
+import { GithubProfileComponent } from './github-profile/github-profile.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
-/* Services */
+/* Services / Providers */
 import { CoursesService } from './services/courses/courses.service';
 import { PostService } from './services/post/post.service';
+import { FollowersService } from './services/followers/followers.service';
+import { AppErrorHandler } from './common/app-error-handler';
 
 /* Directives */
 import { TitleDirective } from './directives/title/title.directive';
@@ -31,10 +38,6 @@ import { InputFormatDirective } from './directives/input-format/input-format.dir
 /* Pipes */
 import { SummaryPipe } from './pipes/summary/summary.pipe';
 import { TitleCasingPipe } from './pipes/titleCasing/titleCasing.pipe';
-import { AppErrorHandler } from './common/app-error-handler';
-import { FollowersComponent } from './followers/followers.component';
-import { FollowersService } from './services/followers/followers.service';
-
 
 @NgModule({
 	declarations: [
@@ -56,7 +59,11 @@ import { FollowersService } from './services/followers/followers.service';
 		NewCourseFormComponent,
 		ChangePasswordFormComponent,
 		PostsComponent,
-		FollowersComponent
+		FollowersComponent,
+		NavbarComponent,
+		HomeComponent,
+		GithubProfileComponent,
+		NotFoundComponent
 	],
 	imports: [
 		BrowserModule,
