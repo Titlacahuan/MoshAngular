@@ -5,7 +5,6 @@ import { IPost_PostResponse } from '../interfaces/post/IPost_PostResponse'
 import { AppError } from '../common/app-error';
 import { NotFoundError } from '../common/not-found-error';
 import { BadRequestError } from '../common/bad-request-error';
-import { ɵELEMENT_PROBE_PROVIDERS } from '@angular/platform-browser';
 
 @Component({
 	selector: 'posts',

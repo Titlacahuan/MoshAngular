@@ -32,8 +32,8 @@ import { InputFormatDirective } from './directives/input-format/input-format.dir
 import { SummaryPipe } from './pipes/summary/summary.pipe';
 import { TitleCasingPipe } from './pipes/titleCasing/titleCasing.pipe';
 import { AppErrorHandler } from './common/app-error-handler';
-import { DataService } from './services/data/data.service';
 import { FollowersComponent } from './followers/followers.component';
+import { FollowersService } from './services/followers/followers.service';
 
 
 @NgModule({
@@ -68,6 +68,7 @@ import { FollowersComponent } from './followers/followers.component';
 	providers: [
 		PostService,
 		CoursesService,
+		FollowersService,
 		{
 			provide: ErrorHandler,
 			useClass: AppErrorHandler
