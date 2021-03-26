@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router'
 
 /* Components */
 import { PanelComponent } from './panel/panel.component';
@@ -68,6 +69,28 @@ import { TitleCasingPipe } from './pipes/titleCasing/titleCasing.pipe';
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
+		RouterModule.forRoot([
+			{ 
+				path: '', 
+				component: HomeComponent 
+			},
+			{ 
+				path: 'followers/:username',
+				component: GithubProfileComponent 
+			},
+			{ 
+				path: 'followers', 
+				component: FollowersComponent 
+			},
+			{ 
+				path: 'posts', 
+				component: PostsComponent 
+			},
+			{ 
+				path: '**', 
+				component: NotFoundComponent 
+			}
+		]),
 		FormsModule,
 		ReactiveFormsModule,
 		HttpClientModule
