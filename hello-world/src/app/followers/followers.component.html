@@ -3,7 +3,9 @@
 		<img class="mr-3 avatar_rounded" [src]="follower.avatar_url" />
 	</div>
 	<div class="media-body">
-		<h3 class="media-heading">{{ follower.login }}</h3>
+		<h3 class="media-heading">
+			<a [routerLink]="['/followers', follower.id]">{{ follower.login }}</a>
+		</h3>
 		<a href="" target=_blank>{{ follower.html_url }}</a>
 	</div>
 </div>
