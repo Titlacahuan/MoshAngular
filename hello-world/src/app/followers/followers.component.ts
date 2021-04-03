@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FollowersService } from '../services/followers/followers.service';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest} from 'rxjs';
+import { map, switchMap } from 'rxjs/operators'
+// import 'rxjs/add/operator/map';
+// import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'followers',
@@ -10,7 +13,7 @@ import { combineLatest, Observable } from 'rxjs';
 })
 export class FollowersComponent implements OnInit {
 
-	followers: any[];
+	followers: any;
 
 	constructor(private route: ActivatedRoute, private service: FollowersService) { }
 
@@ -18,16 +21,18 @@ export class FollowersComponent implements OnInit {
 		let obs = combineLatest([
 			this.route.paramMap,
 			this.route.queryParamMap
-		]).subscribe( (combined) => {
+		])
+		.pipe(switchMap( (combined) => {
+			// Required params
+			
+			// Query Params
 			let page: number = parseInt(combined[1].get('page'));
 			let order: string = combined[1].get('order');
 
-			this.service.getAll()
-			.subscribe(
-				(followers: any[]) => {
-					this.followers = followers;
-				}
-			);
+			return this.service.getAll();
+		}))
+		.subscribe( (followers) => {
+			this.followers = followers;
 		});
 
 		// this.route.queryParamMap.subscribe( (params) => {
