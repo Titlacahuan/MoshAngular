@@ -75,7 +75,7 @@ import { TitleCasingPipe } from './pipes/titleCasing/titleCasing.pipe';
 				component: HomeComponent 
 			},
 			{ 
-				path: 'followers/:id',
+				path: 'followers/:id/:username',
 				component: GithubProfileComponent 
 			},
 			{ 
