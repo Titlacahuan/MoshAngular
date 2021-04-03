@@ -3,8 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { FollowersService } from '../services/followers/followers.service';
 import { combineLatest} from 'rxjs';
 import { map, switchMap } from 'rxjs/operators'
-// import 'rxjs/add/operator/map';
-// import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'followers',
